@@ -1,14 +1,15 @@
-#include "avr_compiler.h"
-#include <avr/io.h>
-#include <util/delay.h>
 #include <asf.h>
-
-#include <stdio.h>
-
-#include <keypad.h>
+#include <avr/io.h>
 #include <conf_usb.h>
+#include <util/delay.h>
+#include <udi_hid_kbd.h>
+#include "avr_compiler.h"
 
-static uint8_t ui_KeyStatusToReport;
+#include <string.h>
+#include <stdbool.h>
+
+#include "keypad.h"
+#include "led.h"
 
 // Keypad
 /*
@@ -20,18 +21,18 @@ ENTER Button	--> Column 1, Row 0	(HID_KEYPAD_7)
 CANCEL Button	--> Column 1, Row 1	(HID_KEYPAD_6)
 No Button		--> Column 1, Row 2	(0)
 No Button		--> Column 1, Row 3	(0)
-Display Button	--> Column 2, Row 0	(HID_KEYPAD_5) (HID_F5)
+Display Button	--> Column 2, Row 0	(HID_KEYPAD_5)
 No Button		--> Column 2, Row 1	(0)
 No Button		--> Column 2, Row 2	(0)
 No Button		--> Column 2, Row 3	(0)
 No Button		--> Column 3, Row 0	(0)
 No Button		--> Column 3, Row 1	(0)
-F1 Button		--> Column 3, Row 2	(HID_KEYPAD_1) (HID_F1)
-F3 Button		--> Column 3, Row 3	(HID_KEYPAD_2) (HID_F3)
+F1 Button		--> Column 3, Row 2	(HID_KEYPAD_1)
+F3 Button		--> Column 3, Row 3	(HID_KEYPAD_2)
 No Button		--> Column 4, Row 0	(0)
 No Button		--> Column 4, Row 1	(0)
-F2 Button		--> Column 4, Row 2	(HID_KEYPAD_3) (HID_F2)
-F4 Button		--> Column 4, Row 3	(HID_KEYPAD_4) (HID_F4)
+F2 Button		--> Column 4, Row 2	(HID_KEYPAD_3)
+F4 Button		--> Column 4, Row 3	(HID_KEYPAD_4)
 */
 
 static const uint8_t kpd_KeyMap[KEYPAD_COLS][KEYPAD_ROWS] = {
@@ -67,7 +68,7 @@ void keypad_init(void) {
 	PORTB.OUTSET = PIN7_bm;
 }
 
-
+// scans the matrix, update lastState and lastCode
 void keypad_poll(void) {
 	uint8_t col, row_r;
 	int8_t detectedCol = -1, detectedRow = -1;
@@ -107,10 +108,61 @@ void keypad_poll(void) {
 uint8_t kpd_getState(void) {
 	return lastState;
 }
-
 uint8_t kpd_getCode(void) {
 	return lastCode;
 }
 
 
-// TESTING GIT BRANCH
+static kpd_stateT prevState;
+static bool exitTestMode = false;
+
+void keypadReport_init(void) {
+	prevState = KEYPAD_RELEASED;
+	exitTestMode = false;
+}
+
+void keypadReport_task(void)
+{
+	uint8_t curr = kpd_getState();
+	uint8_t code = kpd_getCode();
+	
+	bool testMode = ((PORTB.IN & PIN4_bm) == 0);
+	if (testMode) {
+		if (curr == KEYPAD_PRESSED && prevState == KEYPAD_RELEASED)
+		{
+			uint8_t mask = 0;
+			switch (code) 
+			{
+				case HID_KEYPAD_1:	mask = LED1_PIN;	break;	// F1
+				case HID_KEYPAD_2:	mask = LED2_PIN;	break;	// F2
+				case HID_KEYPAD_3:	mask = LED3_PIN;	break;	// F3
+				case HID_KEYPAD_4:	mask = LED4_PIN;	break;	// F4
+			
+				case HID_KEYPAD_5:	mask = LED5_PIN;	break;	// Display
+				case HID_KEYPAD_6:	mask = LED6_PIN;	break;	// Cancel
+				case HID_KEYPAD_7:	mask = LED7_PIN;	break;	// Enter
+				case HID_KEYPAD_8:	mask = LED8_PIN;	break;	// Clear
+				case HID_KEYPAD_9:	mask = LED1_PIN;	break;	// Null
+				default:			mask = 0;			break;
+			}
+			if (mask) led_toggle(mask);
+			exitTestMode = true;
+		}
+		else
+		{
+			if (exitTestMode) {
+				led_allOff();
+				exitTestMode = false;
+			}
+			if (curr == KEYPAD_PRESSED && prevState == KEYPAD_RELEASED) {
+				udi_hid_kbd_down(code);
+			} else if (curr == KEYPAD_RELEASED && prevState == KEYPAD_PRESSED) {
+				udi_hid_kbd_up(code);
+			}
+		}
+	}
+	prevState = curr;
+}
+
+
+// BRANCH: USB_ATTEMPT3
