@@ -27,8 +27,6 @@ int main(void)
 	udc_start();				// start USB stack to authorize VBus monitoring
 	keypadReport_init();		// prepares HID report state
 
-
-	uint8_t prev = KEYPAD_RELEASED;
 	while (true)
 	{
 		keypad_poll();
@@ -55,6 +53,3 @@ bool main_kbd_enable(void) {
 void main_kbd_disable(void) {
 	main_b_kbd_enable = false;
 }
-
-
-// BRANCH: USB_ATTEMPT3

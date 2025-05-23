@@ -2,12 +2,13 @@
 #include <avr/io.h>
 #include <conf_usb.h>
 #include <util/delay.h>
-#include <udi_hid_kbd.h>
+//#include <udi_hid_kbd.h>
 #include "avr_compiler.h"
 
 #include <string.h>
 #include <stdbool.h>
 
+#include "76319_ui.h"
 #include "keypad.h"
 #include "led.h"
 
@@ -113,22 +114,28 @@ uint8_t kpd_getCode(void) {
 }
 
 
-static kpd_stateT prevState;
+static kpd_stateT prev;
 static bool exitTestMode = false;
 
 void keypadReport_init(void) {
-	prevState = KEYPAD_RELEASED;
+	prev = KEYPAD_RELEASED;
 	exitTestMode = false;
 }
 
 void keypadReport_task(void)
-{
+{	
 	uint8_t curr = kpd_getState();
 	uint8_t code = kpd_getCode();
 	
-	bool testMode = ((PORTB.IN & PIN4_bm) == 0);
-	if (testMode) {
-		if (curr == KEYPAD_PRESSED && prevState == KEYPAD_RELEASED)
+	// testing mode
+	PORTB.DIRCLR = PIN4_bm;
+	PORTB.PIN4CTRL = PORT_OPC_PULLUP_gc;
+	volatile uint8_t testMode = PORTB_IN;
+	uint8_t exitTestMode = 0;
+
+	if ((testMode & 0x010) == 0) 
+	{
+		if (curr == KEYPAD_PRESSED && prev == KEYPAD_RELEASED)
 		{
 			uint8_t mask = 0;
 			switch (code) 
@@ -146,23 +153,25 @@ void keypadReport_task(void)
 				default:			mask = 0;			break;
 			}
 			if (mask) led_toggle(mask);
-			exitTestMode = true;
-		}
-		else
-		{
-			if (exitTestMode) {
-				led_allOff();
-				exitTestMode = false;
-			}
-			if (curr == KEYPAD_PRESSED && prevState == KEYPAD_RELEASED) {
-				udi_hid_kbd_down(code);
-			} else if (curr == KEYPAD_RELEASED && prevState == KEYPAD_PRESSED) {
-				udi_hid_kbd_up(code);
-			}
+			exitTestMode = 1;
 		}
 	}
-	prevState = curr;
+	else
+	{
+		if (exitTestMode) {
+			led_allOff();
+			exitTestMode = false;
+		}
+		if (curr == KEYPAD_PRESSED && prev == KEYPAD_RELEASED) {
+			BD76319_KeyToReport(true, code);
+		} else if (curr == KEYPAD_RELEASED && prev == KEYPAD_PRESSED) {
+			BD76319_KeyToReport(false, code);
+		}
+	}
+	
+	if (((testMode & 0x010) != 0) && (exitTestMode = 1)) {
+		led_allOff();
+		exitTestMode = 0;
+	}
+	prev = curr;
 }
-
-
-// BRANCH: USB_ATTEMPT3
