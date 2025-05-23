@@ -94,7 +94,7 @@ typedef struct {
 	.iface.bNumEndpoints       = 1,\
 	.iface.bInterfaceClass     = HID_CLASS,\
 	.iface.bInterfaceSubClass  = HID_SUB_CLASS_NOBOOT,\
-	.iface.bInterfaceProtocol  = HID_PROTOCOL_KEYBOARD,\
+	.iface.bInterfaceProtocol  = HID_PROTOCOL_GENERIC,\
 	.iface.iInterface          = UDI_HID_KBD_STRING_ID,\
 	.hid.bLength               = sizeof(usb_hid_descriptor_t),\
 	.hid.bDescriptorType       = USB_DT_HID,\
@@ -168,14 +168,14 @@ bool udi_hid_kbd_down(uint8_t key_id);
 /**
  * \page udi_hid_keyboard_quickstart Quick start guide for USB device keyboard module (UDI keyboard)
  *
- * This is the quick start guide for the \ref udi_hid_keyboard_group 
- * "USB device keyboard module (UDI keyboard)" with step-by-step instructions on 
+ * This is the quick start guide for the \ref udi_hid_keyboard_group
+ * "USB device keyboard module (UDI keyboard)" with step-by-step instructions on
  * how to configure and use the modules in a selection of use cases.
  *
  * The use cases contain several code fragments. The code fragments in the
  * steps for setup can be copied into a custom initialization function, while
  * the steps for usage can be copied into, e.g., the main application function.
- * 
+ *
  * Also, you can refer to application note
  * <A href="http://ww1.microchip.com/downloads/en/appnotes/doc8446.pdf">
  * AVR4904: ASF - USB Device HID Keyboard Application</A>.
@@ -233,7 +233,7 @@ bool udi_hid_kbd_down(uint8_t key_id);
  *   - \code #define UDI_HID_KBD_ENABLE_EXT() my_callback_keyboard_enable()
 	 extern bool my_callback_keyboard_enable(void); \endcode
  *     \note After the device enumeration (detecting and identifying USB devices),
- *     the USB host starts the device configuration. When the USB keyboard interface 
+ *     the USB host starts the device configuration. When the USB keyboard interface
  *     from the device is accepted by the host, the USB host enables this interface and the
  *     UDI_HID_KBD_ENABLE_EXT() callback function is called and return true.
  *     Thus, it is recommended to enable sensors used by the keyboard in this function.
@@ -270,7 +270,7 @@ bool udi_hid_kbd_down(uint8_t key_id);
  * In this use case, the "USB HID Keyboard (Composite Device)" module is used to
  * create a USB composite device. Thus, this USB module can be associated with
  * another "Composite Device" module, like "USB MSC (Composite Device)".
- * 
+ *
  * Also, you can refer to application note
  * <A href="http://ww1.microchip.com/downloads/en/appnotes/doc8446.pdf">
  * AVR4902 ASF - USB Composite Device</A>.

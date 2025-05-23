@@ -497,14 +497,14 @@ void nvm_eeprom_erase_all(void);
 		AVR8_PART_IS_DEFINED(ATxmega128A3)  | \
 		AVR8_PART_IS_DEFINED(ATxmega128A3U) | \
 		AVR8_PART_IS_DEFINED(ATxmega128C3) 	| \
-		AVR8_PART_IS_DEFINED(ATxmega128D3)  
+		AVR8_PART_IS_DEFINED(ATxmega128D3)
 #    define FLASH_SIZE      (128*1024L)
 #    define FLASH_PAGE_SIZE (512)
 
 #  elif AVR8_PART_IS_DEFINED(ATxmega128A4U)         | \
 		AVR8_PART_IS_DEFINED(ATxmega128B1)  | \
 		AVR8_PART_IS_DEFINED(ATxmega128B3)	| \
-		AVR8_PART_IS_DEFINED(ATxmega128D4)	
+		AVR8_PART_IS_DEFINED(ATxmega128D4)
 #    define FLASH_SIZE      (128*1024L)
 #    define FLASH_PAGE_SIZE (256)
 

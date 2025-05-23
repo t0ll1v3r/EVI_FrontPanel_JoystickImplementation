@@ -120,5 +120,5 @@ void board_init(void)
 			| IOPORT_INIT_HIGH);
 	ioport_configure_pin(IOPORT_CREATE_PIN(PORTF, 2), IOPORT_DIR_INPUT);
 # endif
-#endif	
+#endif
 }

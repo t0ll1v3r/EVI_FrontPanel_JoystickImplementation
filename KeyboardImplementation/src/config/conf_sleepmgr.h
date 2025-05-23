@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief Chip-specific sleep manager configuration
+ * \brief Sleep manager configuration
  *
  * Copyright (c) 2014-2018 Microchip Technology Inc. and its subsidiaries.
  *
@@ -36,7 +36,6 @@
 #ifndef CONF_SLEEPMGR_H
 #define CONF_SLEEPMGR_H
 
-// Sleep manager options
 #define CONFIG_SLEEPMGR_ENABLE
 
 #endif /* CONF_SLEEPMGR_H */

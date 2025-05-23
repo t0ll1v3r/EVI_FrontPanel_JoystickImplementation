@@ -39,8 +39,6 @@
 
 #include "compiler.h"
 
-#warning You must refill the following definitions with a correct values
-
 /**
  * USB Device Configuration
  * @{
@@ -74,6 +72,7 @@
 #if (UC3A3||UC3A4)
 //#define  USB_DEVICE_HS_SUPPORT
 #elif (SAM3XA||SAM3U)
+//#define  USB_DEVICE_HS_SUPPORT
 #endif
 //@}
 
@@ -88,7 +87,6 @@
 //! Mandatory when USB_DEVICE_ATTR authorizes remote wakeup feature
 #define  UDC_REMOTEWAKEUP_ENABLE()        main_remotewakeup_enable()
 #define  UDC_REMOTEWAKEUP_DISABLE()       main_remotewakeup_disable()
-// extern void user_callback_remotewakeup_disable(void);
 //! When a extra string descriptor must be supported
 //! other than manufacturer, product and serial string
 // #define  UDC_GET_EXTRA_STRING()
@@ -102,19 +100,13 @@
  * @{
  */
 /**
- * Configuration of HID Keyboard interface (if used)
+ * Configuration of HID Keyboard interface
  * @{
  */
 //! Interface callback definition
-#define  UDI_HID_KBD_ENABLE_EXT()	main_kbd_enable()
-#define  UDI_HID_KBD_DISABLE_EXT()	main_kbd_disable()
-// #define UDI_HID_KBD_ENABLE_EXT() my_callback_keyboard_enable()
-// extern bool my_callback_keyboard_enable(void);
-// #define UDI_HID_KBD_DISABLE_EXT() my_callback_keyboard_disable()
-// extern void my_callback_keyboard_disable(void);
-#define  UDI_HID_KBD_CHANGE_LED(value)
-// #define  UDI_HID_KBD_CHANGE_LED(value) my_callback_keyboard_led(value)
-// extern void my_callback_keyboard_led(uint8_t value)
+#define  UDI_HID_KBD_ENABLE_EXT()       main_kbd_enable()
+#define  UDI_HID_KBD_DISABLE_EXT()      main_kbd_disable()
+#define  UDI_HID_KBD_CHANGE_LED(value)  BD76319_ui_kbd_led(value)
 //@}
 //@}
 
@@ -127,7 +119,9 @@
 
 //! The includes of classes and other headers must be done at the end of this file to avoid compile error
 #include "udi_hid_kbd_conf.h"
+// #include "76319_udi_hid_kbd_conf.h"
 #include "main.h"
+// #include "ui.h"
 #include "76319_ui.h"
 
 #endif // _CONF_USB_H_

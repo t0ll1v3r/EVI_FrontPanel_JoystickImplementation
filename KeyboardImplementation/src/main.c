@@ -6,6 +6,7 @@
 #include <udi_hid_kbd.h>
 #include "avr_compiler.h"
 
+#include "76319_io_initialization.h"
 #include "keypad.h"
 #include "led.h"
 
@@ -21,17 +22,16 @@ int main(void)
 	sysclk_init();				// initialize clock
 	
 	// written by Uniwest
+	_76319_initialize_io();
 	keypad_init();				// initializes keypad functionality
 	led_init();					// initializes LED functionality
 
 	udc_start();				// start USB stack to authorize VBus monitoring
-	keypadReport_init();		// prepares HID report state
 
 	while (true)
 	{
 		keypad_poll();
-		keypadReport_task();
-		_delay_ms(1);
+		keypad_report();
 	}
 }
 
@@ -39,7 +39,9 @@ void main_suspend_action(void) { }
 void main_resume_action(void) { }
 
 void main_sof_action(void) {
-	if (!main_b_kbd_enable) return;
+	if (!main_b_kbd_enable)
+		return;
+	BD76319_ui_process(udd_get_frame_number());
 }
 
 void main_remotewakeup_enable(void) { }
