@@ -14,19 +14,16 @@ uint8_t jstk_mask;
 volatile uint8_t jstk_testMode;
 
 
-static int8_t jstk_scan(uint16_t jstk_bits) 
-{
-    for (int8_t i = 0; i < SLIDER_COUNT; i++) {
+static int8_t jstk_scan(uint16_t jstk_bits) {
+    for (int8_t i = 0; i < SLIDER_COUNT; i++)
         if ((jstk_bits & (1u << i)) == 0)
             return i;
-    }
     return -1;
 }
 
 
 // vertical slider
-static uint16_t jstk_readVertRaw(void)
-{   // mostly copied from 76319_keyboard
+static uint16_t jstk_readVertRaw(void) { // mostly copied from 76319_keyboard.c
     uint8_t jstk_c = PORTC.IN;
     uint8_t jstk_d = PORTD.IN;
     uint16_t jstk_w = ((uint16_t)jstk_d << 8) | jstk_c;
@@ -42,8 +39,7 @@ int8_t jstk_readVertIndex(void) {
 }
 
 // horizontal slider
-static uint16_t jstk_readHoriRaw(void)
-{   // mostly copied from 76319_keyboard
+static uint16_t jstk_readHoriRaw(void) { // mostly copied from 76319_keyboard.c
     uint8_t jstk_e = PORTE.IN;
     uint8_t jstk_b = PORTB.IN;
     uint16_t jstk_w = ((uint16_t)jstk_b << 8) | jstk_e;
@@ -58,7 +54,8 @@ int8_t jstk_readHoriIndex(void) {
 }
 
 
-uint8_t jstk_readMask(void) {
+uint8_t jstk_readMask(void)
+{
     int8_t vi = jstk_readVertIndex();
     int8_t hi = jstk_readHoriIndex();
 
@@ -73,40 +70,33 @@ uint8_t jstk_readMask(void) {
     return jstk_ledMask(jstk_use);
 }
 
-uint8_t jstk_ledMask(uint8_t idx) {
-    if (idx < 0) {
-        // no touch detected
+uint8_t jstk_ledMask(uint8_t idx)
+{
+    if (idx < 0)    // no touch detected
         return 0;
-    }
 
-    // center dead‑zone
-    if (idx == 5 || idx == 6) {
+    if (idx == 5 || idx == 6)   // center dead‑zone
         return (1u<<3) | (1u<<4);  // LED4 (bit3) + LED5 (bit4)
-    }
 
     // computes 'distance' from center [5,6]
     uint8_t d = (idx < 5) ? (5 - idx) : (idx - 6);
 
     // controls how many LED's should activate
     uint8_t N = (d < 2 ? 2 : (d + 1));
-    if (N > 4) {
-        N = 4;
-    }
+    if (N > 4) N = 4;
 
     uint8_t jstk_mask = 0;
-    if (idx < 5) {  // down/left LED joystick
-        for (uint8_t i = 0; i < N; i++) {
+    if (idx < 5)    // down/left LED joystick
+        for (uint8_t i = 0; i < N; i++)
             jstk_mask |= (1u << (3 - i));
-        }
-    } else {        // up/right LED joystick
-        for (uint8_t i = 0; i < N; i++) {
+    else    // up/right LED joystick
+        for (uint8_t i = 0; i < N; i++)
             jstk_mask |= (1u << (4 + i));
-        }
-    }
     return jstk_mask;
 }
 
-void joystick(void) {
+void joystick(void) 
+{
     jstk_mask = jstk_readMask();
     jstk_testMode = PORTB.IN;
 
