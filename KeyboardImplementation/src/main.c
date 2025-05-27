@@ -7,6 +7,7 @@
 #include "avr_compiler.h"
 
 #include "76319_io_initialization.h"
+#include "joystick.h"
 #include "keypad.h"
 #include "led.h"
 
@@ -28,10 +29,21 @@ int main(void)
 
 	udc_start();				// start USB stack to authorize VBus monitoring
 
+	uint8_t jstk_mask;
+
 	while (true)
 	{
-		keypad_poll();
-		keypad_report();
+		// keypad_poll();
+		// keypad_report();
+
+		jstk_mask = jstk_readMask();
+
+		led_allOff();
+		if (jstk_mask) {
+			led_on(jstk_mask);
+		}
+
+		_delay_ms(10);
 	}
 }
 

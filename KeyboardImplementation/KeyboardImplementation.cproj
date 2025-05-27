@@ -470,6 +470,12 @@
     <Compile Include="src\avr_compiler.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\joystick.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\joystick.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\keypad.c">
       <SubType>compile</SubType>
     </Compile>
