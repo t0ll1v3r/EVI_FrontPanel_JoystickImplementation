@@ -7,7 +7,8 @@
 
 
 // function prototypes
-// void jstk_read(uint8_t *xPercent, uint8_t *yPercent);
+void joystick(void);
+
 int8_t jstk_readVertIndex(void);
 int8_t jstk_readHoriIndex(void);
 uint8_t jstk_readMask(void);

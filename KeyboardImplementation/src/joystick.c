@@ -1,11 +1,18 @@
-//#include <asf.h>
+// #include <asf.h>
 //#include <adc.h>
 #include <avr/io.h>
 #include <stdlib.h>
+#include "avr_compiler.h"
 
+#include "led.h"
 #include "joystick.h"
+#include "76319_io_initialization.h"
 
-#define SLIDER_COUNT   24
+#define SLIDER_COUNT   12
+
+uint8_t jstk_mask;
+volatile uint8_t jstk_testMode;
+
 
 static int8_t jstk_scan(uint16_t jstk_bits) 
 {
@@ -19,27 +26,24 @@ static int8_t jstk_scan(uint16_t jstk_bits)
 
 // vertical slider
 static uint16_t jstk_readVertRaw(void)
-{
+{   // mostly copied from 76319_keyboard
     uint8_t jstk_c = PORTC.IN;
     uint8_t jstk_d = PORTD.IN;
     uint16_t jstk_w = ((uint16_t)jstk_d << 8) | jstk_c;
-    jstk_w >>= 2;            // discard C0 & C1 (SDA/SCL)
+    jstk_w >>= 2;            // discard C0 & C1
     return jstk_w & 0x0FFF;  // keep only bits 0–11
 }
 
 int8_t jstk_readVertIndex(void) {
     int8_t idx = jstk_scan(jstk_readVertRaw());
-
-    if (idx >= 0) {
+    if (idx >= 0)
         idx = 11 - idx;
-    }
-
     return idx;
-    // return jstk_scan(jstk_readVertRaw());
 }
 
 // horizontal slider
-static uint16_t jstk_readHoriRaw(void) {
+static uint16_t jstk_readHoriRaw(void)
+{   // mostly copied from 76319_keyboard
     uint8_t jstk_e = PORTE.IN;
     uint8_t jstk_b = PORTB.IN;
     uint16_t jstk_w = ((uint16_t)jstk_b << 8) | jstk_e;
@@ -48,13 +52,9 @@ static uint16_t jstk_readHoriRaw(void) {
 
 int8_t jstk_readHoriIndex(void) {
     int8_t idx = jstk_scan(jstk_readHoriRaw());
-
-    if (idx >= 0) {
+    if (idx >= 0)
         idx = 11 - idx;
-    }
-    
     return idx;
-    // return jstk_scan(jstk_readHoriRaw());
 }
 
 
@@ -84,7 +84,7 @@ uint8_t jstk_ledMask(uint8_t idx) {
         return (1u<<3) | (1u<<4);  // LED4 (bit3) + LED5 (bit4)
     }
 
-    // computes 'distance' from center [5,]
+    // computes 'distance' from center [5,6]
     uint8_t d = (idx < 5) ? (5 - idx) : (idx - 6);
 
     // controls how many LED's should activate
@@ -104,4 +104,17 @@ uint8_t jstk_ledMask(uint8_t idx) {
         }
     }
     return jstk_mask;
+}
+
+void joystick(void) {
+    jstk_mask = jstk_readMask();
+    jstk_testMode = PORTB.IN;
+
+    if ((jstk_testMode & PIN4_bm) == 0) {
+        if (jstk_mask) {
+            led_allOff();
+            led_on(jstk_mask);
+            _delay_ms(10);
+        }
+    }
 }

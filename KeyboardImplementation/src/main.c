@@ -29,21 +29,14 @@ int main(void)
 
 	udc_start();				// start USB stack to authorize VBus monitoring
 
-	uint8_t jstk_mask;
-
 	while (true)
 	{
-		// keypad_poll();
-		// keypad_report();
+		// keypad
+		keypad_poll();
+		keypad_report();
 
-		jstk_mask = jstk_readMask();
-
-		led_allOff();
-		if (jstk_mask) {
-			led_on(jstk_mask);
-		}
-
-		_delay_ms(10);
+		// joystick
+		joystick();
 	}
 }
 

@@ -182,8 +182,9 @@ void keypad_report(void)
 	kpd_currState = keypad_getState();
 	kpd_codeOut = keypad_getCode();
 
-	if ((kpd_testMode & 0x010) == 0) 
-	{
+	// if ((kpd_testMode & 0x010) == 0)
+	if ((kpd_testMode & PIN4_bm) == 0) 
+	{	// test mode activated
 		if (kpd_currState == KEYPAD_PRESSED && kpd_prevState == KEYPAD_RELEASED)
 		{
 			uint8_t kpd_testMask = 0;
@@ -206,7 +207,7 @@ void keypad_report(void)
 		}
 	}
 	else
-	{
+	{	// normal mode
 		if (kpd_currState == KEYPAD_PRESSED && kpd_prevState == KEYPAD_RELEASED) {
 			kpd_codeOut = keypad_getCode();
 			BD76319_KeyToReport(kpd_currState, kpd_codeOut);
