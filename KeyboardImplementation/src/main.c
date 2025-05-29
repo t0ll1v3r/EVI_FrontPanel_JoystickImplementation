@@ -1,9 +1,5 @@
 #include <asf.h>
-#include <string.h>
-
 #include "conf_usb.h"
-#include <util/delay.h>
-#include <udi_hid_kbd.h>
 #include "avr_compiler.h"
 
 #include "76319_io_initialization.h"
@@ -23,7 +19,7 @@ int main(void)
 	sysclk_init();				// initialize clock
 	
 	// written by Uniwest
-	_76319_initialize_io();
+	_76319_initialize_io();		// will be replaced later
 	keypad_init();				// initializes keypad functionality
 	led_init();					// initializes LED functionality
 

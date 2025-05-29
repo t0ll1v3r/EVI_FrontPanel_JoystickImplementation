@@ -119,8 +119,8 @@ void keypad_poll(void) {
 		kpd_rowVal = (PORTF.IN);
 		kpd_rowVal = kpd_rowVal & 0x0f0;
 
-		switch(kpd_rowVal)	// Convert the port row address value to a row element value for the array
-		{					// kpd_rowVal is the Value read from the port (bit value)
+		switch(kpd_rowVal)	// convert the port row address value to a row element value for the array
+		{					// kpd_rowVal is the value read from the port (bit value)
 			case 0x0E0:
 				kpd_detectedRow = 0;
 				kpd_detectedCol = kpd_count;
@@ -182,7 +182,6 @@ void keypad_report(void)
 	kpd_currState = keypad_getState();
 	kpd_codeOut = keypad_getCode();
 
-	// if ((kpd_testMode & 0x010) == 0)
 	if ((kpd_testMode & PIN4_bm) == 0) 
 	{	// test mode activated
 		if (kpd_currState == KEYPAD_PRESSED && kpd_prevState == KEYPAD_RELEASED)
@@ -202,7 +201,8 @@ void keypad_report(void)
 				case HID_KEYPAD_9:	kpd_testMask = LED1_PIN;	break;	// Null
 				default:			kpd_testMask = 0;			break;
 			}
-			if (kpd_testMask) led_toggle(kpd_testMask);
+			if (kpd_testMask)
+				led_toggle(kpd_testMask);
 			kpd_exitTestMode = 1;
 		}
 	}

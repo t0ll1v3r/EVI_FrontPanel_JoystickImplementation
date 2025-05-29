@@ -43,7 +43,7 @@ static uint16_t jstk_readHoriRaw(void) { // mostly copied from 76319_keyboard.c
     uint8_t jstk_e = PORTE.IN;
     uint8_t jstk_b = PORTB.IN;
     uint16_t jstk_w = ((uint16_t)jstk_b << 8) | jstk_e;
-    return jstk_w & 0x0FFF;  // B4–B7 land above bit11 and get masked off
+    return jstk_w & 0x0FFF;	// B4–B7 land above bit11 and get masked off
 }
 
 int8_t jstk_readHoriIndex(void) {
