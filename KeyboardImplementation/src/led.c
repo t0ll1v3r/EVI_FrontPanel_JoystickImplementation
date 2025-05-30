@@ -2,8 +2,6 @@
 #include "led.h"
 #include <asf.h>
 
-#define LED_PORT	PORTA
-#define LED_MASK	0xFF		// PA0–PA7
 
 void led_init(void) {
     LED_PORT.DIRSET = LED_MASK;	// outputs
