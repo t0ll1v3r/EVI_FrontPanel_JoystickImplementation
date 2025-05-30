@@ -344,12 +344,6 @@
     <Folder Include="src\config\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\76319_io_initialization.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\76319_io_initialization.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\76319_ui.c">
       <SubType>compile</SubType>
     </Compile>
@@ -468,6 +462,12 @@
       <SubType>compile</SubType>
     </None>
     <Compile Include="src\avr_compiler.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\io.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\io.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\joystick.c">

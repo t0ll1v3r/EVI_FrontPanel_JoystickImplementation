@@ -2,6 +2,10 @@
 #include "led.h"
 #include <asf.h>
 
+#define LED_PORT PORTA
+#define LED_MASK 0xFF
+
+// YOOOOOFDSLFJ:SDL
 
 void led_init(void) {
     LED_PORT.DIRSET = LED_MASK;	// outputs
