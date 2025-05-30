@@ -2,8 +2,6 @@
 #include "conf_usb.h"
 #include "avr_compiler.h"
 
-// #include "76319_io_initialization.h"
-#include "joystick.h"
 #include "keypad.h"
 #include "led.h"
 #include "io.h"
@@ -20,7 +18,6 @@ int main(void)
 	sysclk_init();				// initialize clock
 	
 	// written by Uniwest
-	// _76319_initialize_io();		// will be replaced later
 	io_init();
 	keypad_init();				// initializes keypad functionality
 	// led_init();					// initializes LED functionality
@@ -29,12 +26,8 @@ int main(void)
 
 	while (true)
 	{
-		// keypad
 		keypad_poll();
 		keypad_report();
-
-		// joystick
-		joystick();
 	}
 }
 

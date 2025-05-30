@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "76319_io_initialization.h"
+// #include "76319_io_initialization.h"
 #include "76319_ui.h"
 #include "keypad.h"
 #include "led.h"
@@ -183,7 +183,7 @@ void keypad_report(void)
 	kpd_codeOut = keypad_getCode();
 
 	if ((kpd_testMode & PIN4_bm) == 0) 
-	{	// test mode activated
+	{	// test mode
 		if (kpd_currState == KEYPAD_PRESSED && kpd_prevState == KEYPAD_RELEASED)
 		{
 			uint8_t kpd_testMask = 0;
