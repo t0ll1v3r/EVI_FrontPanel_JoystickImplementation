@@ -1,7 +1,7 @@
 #include <asf.h>
 #include <avr/io.h>
 #include <conf_usb.h>
-#include <util/delay.h>
+// #include <util/delay.h>
 
 #include "76319_ui.h"
 #include "keypad.h"
@@ -146,7 +146,7 @@ void keypad_poll(void) {
 	if ((kpd_detectedRow < KEYPAD_ROWS) && (kpd_detectedCol < KEYPAD_COLS))
 	{
 		if (kpd_keyPressed == KEYPAD_RELEASED) {
-			_delay_ms(10);
+			// _delay_ms(10);
 			kpd_code = kpd_keyAssign[kpd_detectedCol][kpd_detectedRow];
 			kpd_keyPressed = KEYPAD_PRESSED;
 		}
@@ -154,7 +154,7 @@ void keypad_poll(void) {
 	else
 	{
 		if (kpd_keyPressed == KEYPAD_PRESSED) {
-			_delay_ms(10);
+			// _delay_ms(10);
 			kpd_keyPressed = KEYPAD_RELEASED;
 		}
 	}

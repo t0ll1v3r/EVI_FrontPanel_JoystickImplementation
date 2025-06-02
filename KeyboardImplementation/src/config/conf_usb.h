@@ -119,9 +119,7 @@
 
 //! The includes of classes and other headers must be done at the end of this file to avoid compile error
 #include "udi_hid_kbd_conf.h"
-// #include "76319_udi_hid_kbd_conf.h"
 #include "main.h"
-// #include "ui.h"
 #include "76319_ui.h"
 
 #endif // _CONF_USB_H_

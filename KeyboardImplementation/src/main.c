@@ -1,5 +1,6 @@
 #include <asf.h>
 #include "conf_usb.h"
+// #include <util/delay.h>
 #include "avr_compiler.h"
 
 #include "keypad.h"
@@ -20,15 +21,10 @@ int main(void)
 	// written by Uniwest
 	io_init();
 	keypad_init();				// initializes keypad functionality
-	// led_init();					// initializes LED functionality
 
 	udc_start();				// start USB stack to authorize VBus monitoring
 
-	while (true)
-	{
-		keypad_poll();
-		keypad_report();
-	}
+	while (true) { }
 }
 
 void main_suspend_action(void) { }
@@ -37,6 +33,9 @@ void main_resume_action(void) { }
 void main_sof_action(void) {
 	if (!main_b_kbd_enable)
 		return;
+	keypad_poll();
+	keypad_report();
+
 	BD76319_ui_process(udd_get_frame_number());
 }
 

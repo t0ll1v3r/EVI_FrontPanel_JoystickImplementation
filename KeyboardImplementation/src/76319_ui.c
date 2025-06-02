@@ -49,7 +49,6 @@ uint16_t DoSomethingWithPassedValue(uint16_t pui_Value);
 // Variables for this file only
 
 // Variable for Generic_USB class - Refer to Mircrochip example project --> GENERIC_EXAMPLE1
-// static uint8_t ui_hid_report[UDI_HID_REPORT_OUT_SIZE];
 static uint8_t ui_KeyStatusToReport;
 static uint8_t ui_KeyToReport;
 
@@ -76,47 +75,6 @@ Bd76319_ui_sequence[] =
 
 // These function can be used if an interrupt is used to send USB information
 // Refer to the AVR example projects --> GENERIC_EXAMPLE1 or KEYBOARD_EXAMPLE1
-/*
-void ui_init(void)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code.
-}
-
-void ui_powerdown(void)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code.
-}
-
-void Bd76319_ui_wakeup_enable(void)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code.
-}
-
-
-void Bd76319_ui_wakeup_disable(void)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code.
-}
-
-
-ISR(PORTx_INT0_vect)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code.
-}
-
-
-void Bd76319_ui_wakeup(void)
-{
-	// Called from main.c
-	// This function currently does not perform any functionality and is not used in 76319 Front Panel code
-}
-*/
-
 
 // Debug only function
 uint16_t DoSomethingWithPassedValue(uint16_t pui_Value)
@@ -143,36 +101,6 @@ void BD76319_KeyToReport(uint16_t pui_KeyStatus, uint16_t pui_KeyValue)
 	ui_KeyStatusToReport = pui_KeyStatus;
 	ui_KeyToReport = pui_KeyValue;
 }
-
-/*
-// Procedure for Keyboard USB Class - Refer to Mircrochip example project --> GENERIC_EXAMPLE1
-void BD76319_ui_process(uint16_t pui_framenumber)
-{
-	static uint16_t lui_Value1, lui_Value2;
-
-	lui_Value1 = (pui_framenumber % 1000);
-	lui_Value2 = DoSomethingWithPassedValue(lui_Value1);
-	if(ui_KeyStatusToReport != false)
-	{
-		ui_hid_report[0]= ui_KeyToReport;
-		udi_hid_generic_send_report_in(ui_hid_report);
-
-		// Clear last value sent
-		ui_KeyToReport = 0;
-		ui_KeyStatusToReport = false;
-	}
-}
-*/
-
-/*
-// Procedure for Keyboard USB Class - Refer to Mircrochip example project --> GENERIC_EXAMPLE1
-void BD76319_ui_led_change(uint8_t *report)
-{
-	// Write Alarm information to Alarm LEDs
-	PORTA.OUTCLR = report[0];
-}
-*/
-
 
 
 // Procedure for Keyboard USB Class - Slightly modified - Refer to Mircrochip example project --> KEYBOARD_EXAMPLE1
