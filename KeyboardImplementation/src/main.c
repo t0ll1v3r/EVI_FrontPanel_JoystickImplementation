@@ -1,9 +1,5 @@
 #include <asf.h>
-#include <string.h>
-
 #include "conf_usb.h"
-#include <util/delay.h>
-#include <udi_hid_kbd.h>
 #include "avr_compiler.h"
 
 #include "keypad.h"
