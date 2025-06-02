@@ -2,21 +2,13 @@
 #include <avr/io.h>
 #include <conf_usb.h>
 #include <util/delay.h>
-//#include <udi_hid_kbd.h>
-#include "avr_compiler.h"
 
-#include <string.h>
-#include <stdbool.h>
-
-#include "76319_io_initialization.h"
 #include "76319_ui.h"
 #include "keypad.h"
 #include "led.h"
 
-// replaced: KeyPadKeyAssignment[KEY_PAD_COLUMNS][KEY_PAD_ROWS]
 static volatile uint8_t kpd_keyAssign[KEYPAD_COLS][KEYPAD_ROWS];
 
-// replaced: KeyPadColumnAddress[KEY_PAD_COLUMNS]
 static volatile uint8_t kpd_colAddr[KEYPAD_COLS];
 
 static volatile uint8_t kpd_rowVal;			// <- KeyPadKeyRowValue
@@ -33,7 +25,6 @@ volatile uint8_t kpd_testMode;
 
 void keypad_init(void)
 {
-	// Keypad
 	/*
 	NULL Button		--> Column 0, Row 0	(HID_KEYPAD_9)
 	CLEAR Button	--> Column 0, Row 1	(HID_KEYPAD_8)

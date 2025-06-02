@@ -3,7 +3,6 @@
 #define KEYPAD_H
 
 #include <stdint.h>
-#include <stdbool.h>
 
 
 #define KEYPAD_PRESSED	1

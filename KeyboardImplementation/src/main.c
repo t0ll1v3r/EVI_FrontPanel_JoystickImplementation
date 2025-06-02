@@ -6,7 +6,6 @@
 #include <udi_hid_kbd.h>
 #include "avr_compiler.h"
 
-// #include "76319_io_initialization.h"
 #include "keypad.h"
 #include "led.h"
 #include "io.h"
