@@ -2,15 +2,13 @@
 #include "led.h"
 #include <asf.h>
 
-#define LED_PORT PORTA
-#define LED_MASK 0xFF
+#define LED_PORT	PORTA
+#define LED_MASK	0xFF		// PA0–PA7
 
-// YOOOOOFDSLFJ:SDL
-
-void led_init(void) {
-    LED_PORT.DIRSET = LED_MASK;	// outputs
-    LED_PORT.OUTSET = LED_MASK;
-}
+// void led_init(void) {
+//     LED_PORT.DIRSET = LED_MASK;	// outputs
+//     LED_PORT.OUTSET = LED_MASK;
+// }
 
 void led_allOn(void) {			// turns all LED's on
 	LED_PORT.OUTCLR = LED_MASK;

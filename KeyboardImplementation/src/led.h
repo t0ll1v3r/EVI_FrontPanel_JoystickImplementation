@@ -13,7 +13,7 @@
 #define LED7_PIN    (1 << 6)
 #define LED8_PIN    (1 << 7)
 
-void led_init(void);
+// void led_init(void);
 void led_allOn(void);
 void led_allOff(void);
 void led_on(uint8_t mask);
